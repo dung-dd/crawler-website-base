@@ -1,0 +1,30 @@
+﻿
+* LOGIN XỬ LÝ
+Sau khi nhận được url, thực hiện tạo socket với url,
+
+
+* URL
+mỗi url sẽ là 1 đối tượng có các thuộc tính là: full_url, param, extension(.php, .html), frame(#frame1, #frame2)
+các đối url sẽ nằm trong 1 list danh sách.
+- gọi đến craw với đối số là url nhập vào từ trình duyệt
+- Đối tượng url có các thuộc tính sau:
+	+ index: chỉ số của đối tượng url đó trong list
+	+ trạng thái: đang được crawler|đã được crawler| chưa được crawler
+	+ full_path
+	+ param
+	+ category: extension of file
+
+* CHIẾN LƯỢC QUÉT
+- Tìm link trong các thẻ "a", "link", "button", "form[action]"
+
+- Ngoài các đối tượng là url còn có thêm các đối tượng là direction. Check trong các thư mục có file mặc định là gì. có bị lỗi liệt kê file hay không hay có thêm link trong file mặc định của url
+- Thực hiện tìm trong các file mặc định như robots.txt
+
+
+các link có các dạng:
+		+ http://domain.com
+		+ http://difficultdomain.com
+		+ /xx/yy.php
+
+[*] XỬ LÝ CÁC KẾT NỐI ĐẾN
+	+ Client chạy đầu tiên sẽ kích hoạt service ở cổng 50000
