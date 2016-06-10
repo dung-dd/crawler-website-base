@@ -8,8 +8,12 @@ function setOptionSelect(){
 			document.cookie = z+"="+"1";	
 		}
 		else{
-			document.cookie = z+"="+"0";	
+			document.cookie = z + "=" + "0";	
 		}
 	}
 	var x = document.querySelectorAll("[title='test']");   
+}
+
+function limitAmount(){
+	alert("capture event");
 }

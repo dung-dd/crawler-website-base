@@ -28,3 +28,6 @@ các link có các dạng:
 
 [*] XỬ LÝ CÁC KẾT NỐI ĐẾN
 	+ Client chạy đầu tiên sẽ kích hoạt service ở cổng 50000
+
+[*] Run 
+	Chayj

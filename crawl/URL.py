@@ -105,7 +105,10 @@ class URL():
 		# port
 		# print "uri: ",uri
 		if len(domain_port.split(":")) > 1:
-			port = int(domain_port.split(":")[1])
+			try:
+				port = int(domain_port.split(":")[1])
+			except:
+				port = 80
 
 		return self._detach_element(list_path_url, domain=domain, port=port)
 

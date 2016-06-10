@@ -1,7 +1,7 @@
 import config
 # from get_link import *
-import get_link
-
+from get_link import get_link
+from CrawlerException import CrawlerException
 import socket
 from URL import URL 
 import re
@@ -9,7 +9,7 @@ import re
 crlf = "\r\n"
 crlf_crlf = "\r\n\r\n"
 
-DATA_SEND = "GET {0} HTTP/1.1\r\nHOST: {1}\r\nAgent: {2}\r\nConnection: close\r\n\r\n"
+DATA_SEND = "GET {0} HTTP/1.1\r\nHOST: {1}\r\n{2}Connection: close\r\n\r\n"
 """
 data for request:
 
@@ -30,10 +30,19 @@ class Audit():
 		self.domain = url.domain
 		self.port = url.port
 		self.RESULTS = []
-		self.audit(self.domain, url.port)
+		self.audit(self.domain, url.port)	
 		self.conn.close()
-		self.debug("-"*20+" END "+"-"*20)
+		self.debug("\n")
+		self.debug("-"*30+" SEARCH ENDED "+"-"*30)
 		# self.test(url)
+
+
+	def get_headers(self, source, host):
+		H = ""
+		row = "{0}: {1}\r\n"
+		for field in config.HEADERS.keys():
+			H += row.format(field, config.HEADERS[field])
+		return DATA_SEND.format(source, host, H)
 
 
 	def test(self, url):
@@ -47,22 +56,16 @@ class Audit():
 		print "frames: ", url.frames
 
 
-	def get_link(self, response, domain, port, folder):
+	def get_links(self, response, domain, port, folder):
 		"""
 			MAIN function handle crawler
 		"""
 		# find link in tags: a, link, form, button
 		# call to all function in file get_link
 		# for method in get_link:
-		for attr in dir(get_link):
-			item = getattr(get_link, attr)
-			if callable(item) : # and attr=="get_link_tag_a"
-				links = item(response, domain, port, folder)
-				if isinstance(links, list):
-					# del None element
-					links = filter(None, links)			
-					return links
-		return []
+		links = get_link(response, domain, port, folder)
+		links = filter(None, links.getResults())
+		return links
 
 
 	def audit(self, origin, response):
@@ -73,10 +76,10 @@ class Audit():
 		"""
 		while len(self.QUEUES) > 0:
 			url_ = self.QUEUES.pop()
-			self.debug("Crawling URL: " + url_.get_url())  # print debug
+			self.debug("       [*] Crawling URL: " + url_.get_url())  # print debug
 			self.RESULTS.append(url_)
 			header, response = self.connect_getdata(url_.domain, url_.port, url_.get_module())
-			links = self.get_link(response, self.domain, self.port, url_.folder)
+			links = self.get_links(response, self.domain, self.port, url_.folder)
 			for link in links:
 				url = URL(link)
 				if not self.is_in_results(url):
@@ -105,11 +108,7 @@ class Audit():
 			s.connect((host, port))
 		except :
 			return "",""
-		# same:
-		# GET / HTTP1.1
-		# HOST: crawler.com
-		# data_send = "GET {0} HTTP1.1\r\nHOST: {1}".format(module, host)
-		data_send = DATA_SEND.format(module, host, config.AGENT)
+		data_send = self.get_headers(module, host)
 		s.send(data_send)
 		data_recv = ''
 		while 1:
@@ -126,11 +125,7 @@ class Audit():
 			data = data_recv.split(crlf_crlf)
 			header = data[0]
 			body = "".join(_ for _ in data[1:])
-		tmp__ = "1" if crlf_crlf in data_recv else "0"
-		f = open("test.txt","a")
-		f.write("----------------- "+module+"  "+tmp__+" ---------------------")
-		f.write(data_recv)
-		f.close()
+		
 		return header, body
 
 

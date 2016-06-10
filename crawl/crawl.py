@@ -5,6 +5,8 @@ Main Handle. Call to others files in folder crawl
 
 """
 
+
+
 from audit import Audit
 from config import *
 class Crawler(object):
@@ -12,17 +14,32 @@ class Crawler(object):
 		self.service = None
 		self.is_run = True
 		self.clients = []
+		
+
+	def start(self):
 		self.create_socket(MAX_CLIENT)
+
+
+	def debug(self, string):
+		print string
 
 
 	def crawl(self, conn, url):
 		"""
 			:argv: string argv[1] with host, port, module
 		"""
-		print str(conn.getsockname()) + "  find url: " + url
-		results = Audit(conn, url)
+		client = conn.getpeername()
+		self.debug (YELLOW + str(client) + "  crawl url: " + url + WHITE)
+		results = []
+		A = Audit(conn, url)
+		results = A.RESULTS
 		conn.close()
 		self.clients.remove(conn)
+		self.debug (BLUE + "=" * 60 + WHITE)
+		self.debug (BLUE + "||\t" + str(client) + "  disconnect" + "\t\t||" + WHITE)
+		self.debug (BLUE + "||\t" + "Search: " + url + ", Results: " + str(len(results)) + "\t\t||" + WHITE)
+		self.debug (BLUE + "=" * 60 + WHITE)
+		exit()
 
 
 	def create_socket(self, MAX_CLIENT):
@@ -44,16 +61,25 @@ class Crawler(object):
 					thread.start_new_thread(self.crawl, (conn, url, ))
 					self.clients.append(conn)
 				else:
+					self.debug (AQUA + "Max Client" + str(server) + WHITE)
 					conn.close()
-			except Exception, e:
-				pass
-		for _ in self.clients:
-			_.close()
-		self.service.close()
+			except KeyboardInterrupt:
+				for _ in self.clients:
+					self.debug (RED + "Closed connect with " + YELLOW + str(_.getpeername()) + WHITE)
+					_.close()
+				self.debug (BLUE + "Closed listen in " + str(server), WHITE)
+				self.service.close()
+				exit()
 
+		for _ in self.clients:
+			self.debug (RED + "Closed connect with " + YELLOW + str(_.getpeername()) + WHITE)
+			_.close()
+		self.debug (BLUE + "Closed listen in " + str((SERVER, PORT)) + WHITE)
+		self.service.close()
 
 if __name__ == "__main__":
 	import sys, socket
 	import thread
-
+	print AQUA , "Listen in ", (SERVER, PORT), WHITE
 	c = Crawler()
+	c.start()

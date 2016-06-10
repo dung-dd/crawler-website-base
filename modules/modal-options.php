@@ -10,14 +10,28 @@
 				<form action="" method="post">
 					<div class="row">
 						<div class="col-md-6">
-							<label><input type="checkbox" value="1" name="opt[opt1]">&nbsp;Option</label><br>
-							<label><input type="checkbox" value="1" name="opt[opt2]">&nbsp;Option</label><br>
-							<label><input type="checkbox" value="1" name="opt[opt3]">&nbsp;Option</label>
+							<label><input type="checkbox" value="1" name="opt[opt1]">&nbsp;Not js, css</label><br>
+							<label><input type="checkbox" value="1" name="opt[opt3]" onchange="addLimitAmount();" id="amount-checkbox">&nbsp;Limit amounts</label >
+							<label><div id="amount-input" class="col-md-6"></div></label >
+<script type="text/javascript">
+	function addLimitAmount(){
+			var amount_checkbox = document.getElementById("amount-checkbox");
+			var amount_input = document.getElementById("amount-input");
+			var input = "<input class='form-control' type='text'>";
+			if (amount_checkbox.checked){
+				amount_input.innerHTML = input;
+			}else{
+				amount_input.innerHTML = "";
+			}
+
+	}
+
+</script>
 						</div>
 						<div class="col-md-6">
-							<label><input type="checkbox" name="opt[opt3]">&nbsp;Option</label><br>
-							<label><input type="checkbox" name="opt[opt3]">&nbsp;Option</label><br>
-							<label><input type="checkbox" name="opt[opt3]">&nbsp;Option</label>
+							<label><input type="checkbox" name="opt[opt2]">&nbsp;ALL</label><br>
+							<label><input type="checkbox" value="1" name="opt[opt4]">&nbsp;Only php, jsp, aspx, ...</label><br>
+							<label>
 						</div>
 					</div><!-- end row -->
 				</form>

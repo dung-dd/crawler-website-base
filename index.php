@@ -10,6 +10,11 @@
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/handle.js"></script>
 
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+
 </head>
 <body>
 <!-- ------------------------ header ---------------------- -->
@@ -32,40 +37,12 @@
 				</button>
 			</center>
 		</form>
-	</div>
 
 	<!-- ---------------- module results ---------------- -->
-	<!-- // <?php 	//include "modules/results.php"; ?> -->
-
-
-	<div id="result">
-		<div class="container">
-			<table class="table">
-				<thead>
-					<tr>
-						<th class="col-md-1">STT</th>
-						<th class="col-md-7">URL</th>
-						<th class="col-md-4">Param</th>
-					</tr>
-				</thead>
-				<tbody>
-	<!-- ---------------- handler ---------------------- -->
-	<?php 
-		include "modules/handler.php";
-	 ?>
-
-				</tbody>
-				<td></td>
-			</table>
-		</div>
-	</div><!-- end results -->
-
-
+	<?php 	include "modules/results.php"; ?> 
 
 
 </div><!-- end body -->
-
-
 
 <!-- -------------------------- footer -------------------------- -->
 <div id="footer">

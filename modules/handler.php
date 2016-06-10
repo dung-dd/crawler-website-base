@@ -10,7 +10,12 @@
 		// khởi tạo socket
 		if ($url === "")
 		{	
-			echo "Khong de trong url";
+			$danger = 	'<div class="alert alert-danger fade in">';
+    		$danger .=	'<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
+    		$danger .=	'<strong>Cảnh báo!</strong> URL Không được để trống';
+			$danger .=	'</div>';
+			// echo "Khong de trong url";
+			echo "$danger";
 			exit();
 		}
 		

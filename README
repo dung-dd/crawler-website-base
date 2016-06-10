@@ -1,0 +1,8 @@
+Run service crawler/crawl.py
+CLI: 
+	nc localhost 50000 \n website\n
+GUI | WEB:
+	localhost/crawler/index.php
+
+close service: 
+	send website=close
